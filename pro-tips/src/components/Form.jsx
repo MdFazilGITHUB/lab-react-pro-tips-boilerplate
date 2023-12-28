@@ -1,4 +1,6 @@
 import React, { useState }  from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Form = () => {
   const [formSubmit, setFormSubmit] = useState(false);
@@ -18,16 +20,36 @@ const Form = () => {
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    console.log("formData: ", formData);  
+    
     let errors = validate(formData);
     setFormError(errors);
 
     let errorKeyArray = Object.keys(errors);
 
     if (errorKeyArray.length == 0) {
+      toast.success('Form Submitted', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
       setFormSubmit(true);
     } else {
       setFormSubmit(false);
+      toast.error('Please fill the form with the required info.', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        });
     }
   };
 
@@ -54,6 +76,7 @@ const Form = () => {
 
   return (
     <div className="form-container">
+    <ToastContainer />
       <fieldset>
         <legend>Fill this Form</legend>
         <form onSubmit={formSubmitHandler} autoComplete="off">
@@ -72,7 +95,7 @@ const Form = () => {
           {formError.lastName && <p className="err">{formError.lastName}</p>}
 
           <label> Email Address:</label>
-          <input type="text" name="email" onChange={handleInputChange} />
+          <input type="email" name="email" onChange={handleInputChange}/>
           {formError.email && <p className="err">{formError.email}</p>}
 
           <label> Phone Number:</label>
